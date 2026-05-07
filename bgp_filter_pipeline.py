@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-bgpscout_filter_pipeline.py
+bgp_filter_pipeline.py
 
 Combined deterministic filtering pipeline for BGP community CSVs produced by
-bgpscout_webcrawling.py. Expected input columns (5):
+bgp_webcrawling.py. Expected input columns (5):
     asn, asname, community, description, url
 
 Filtering stages (in order):
@@ -19,7 +19,7 @@ Filtering stages (in order):
     9. normalize_placeholder     — rewrite <DIGIT...> placeholders to DIGIT<...>
 
 Usage:
-    python3 bgpscout_filter_pipeline.py <input.csv> <trusted_as.txt>
+    python3 bgp_filter_pipeline.py <input.csv> <trusted_as.txt>
 
 Outputs:
     <input>_filtered.csv  — lines that passed all stages
@@ -430,7 +430,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Combined deterministic filter pipeline for BGP community CSVs."
     )
-    parser.add_argument("input_csv",  help="CSV produced by bgpscout_webcrawling.py")
+    parser.add_argument("input_csv",  help="CSV produced by bgp_webcrawling.py")
     parser.add_argument("trusted_as", help="File with one trusted ASN per line")
     return parser.parse_args()
 
