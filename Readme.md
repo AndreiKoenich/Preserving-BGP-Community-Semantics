@@ -2,8 +2,8 @@
 
 Each community entry in the dictionary is annotated with a **semantic tag** that describes the operational meaning of that community. Tags follow a structured hierarchical scheme with colon-separated components, for example:
 
-- `information:location:geo_scope:city`
-- `action:outbound:advertise:prepend:peer_targeting`
+- `information:location`
+- `outbound:action:advertise:prepend:peer_targeting`
 
 The taxonomy is organised into three top-level categories:
 
