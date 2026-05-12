@@ -405,10 +405,10 @@ print(f"  {len(ripe_asn_df):,} ASNs loaded", flush=True)
 _done(t0)
 
 # ---------------------------------------------------------------------------
-# Load our dataset (passo5)
+# Load our dataset (our_dataset)
 # ---------------------------------------------------------------------------
 t0 = _step("Loading our dataset (our_dataset.csv)")
-passo5_raw_df = pl.read_csv(
+our_dataset_raw_df = pl.read_csv(
     "input_files/our_dataset.csv",
     has_header=True,
     schema={
@@ -425,7 +425,7 @@ passo5_raw_df = pl.read_csv(
         "confidence_explain":pl.String,
     },
 ).pipe(parse_community_type)
-print(f"  {len(passo5_raw_df):,} rows loaded", flush=True)
+print(f"  {len(our_dataset_raw_df):,} rows loaded", flush=True)
 _done(t0)
 
 # ---------------------------------------------------------------------------
@@ -514,22 +514,22 @@ print(f"  {len(krenc_df):,} rows loaded", flush=True)
 _done(t0)
 
 # ---------------------------------------------------------------------------
-# Derive filtered passo5 views
+# Derive filtered our_dataset views
 # ---------------------------------------------------------------------------
-t0 = _step("Deriving filtered passo5 views")
-passo5_all_df = passo5_raw_df.filter(
+t0 = _step("Deriving filtered our_dataset views")
+our_dataset_all_df = our_dataset_raw_df.filter(
     pl.col("first").str.contains(
         r"^(?:\d+)(?::(?:\d+|\d+(<[^>]*>)*\d*|\d*(<[^>]*>)*\d+))*$"
     )
 )
-passo5_std_df = passo5_all_df.filter(pl.col("type") == "standard")
-passo5_lrg_df = passo5_all_df.filter(pl.col("type") == "large")
-passo5_exp_df = (
-    passo5_raw_df
+our_dataset_std_df = our_dataset_all_df.filter(pl.col("type") == "standard")
+our_dataset_lrg_df = our_dataset_all_df.filter(pl.col("type") == "large")
+our_dataset_exp_df = (
+    our_dataset_raw_df
     .filter(~pl.col("community").str.contains(r"<[^>]*>"))
     .filter(pl.col("type") == "standard")
 )
-print(f"  all: {len(passo5_all_df):,} | std: {len(passo5_std_df):,} | lrg: {len(passo5_lrg_df):,} | exp: {len(passo5_exp_df):,}", flush=True)
+print(f"  all: {len(our_dataset_all_df):,} | std: {len(our_dataset_std_df):,} | lrg: {len(our_dataset_lrg_df):,} | exp: {len(our_dataset_exp_df):,}", flush=True)
 _done(t0)
 
 # ---------------------------------------------------------------------------
@@ -544,11 +544,11 @@ print(f"\nRouteViews slice for {MONTH}: standard={len(rv_month):,} | large={len(
 
 # — Our dataset, standard communities —
 t0 = _step("match_communities: ours standard × routeviews standard")
-_, routeviews_matched_passo5_std_df = match_communities(
-    passo5_std_df, rv_month, how=join_ours_routeviews
+_, routeviews_matched_our_dataset_std_df = match_communities(
+    our_dataset_std_df, rv_month, how=join_ours_routeviews
 )
-_total   = len(routeviews_matched_passo5_std_df)
-_matched = len(routeviews_matched_passo5_std_df.filter(pl.col("matched")))
+_total   = len(routeviews_matched_our_dataset_std_df)
+_matched = len(routeviews_matched_our_dataset_std_df.filter(pl.col("matched")))
 _done(t0)
 print(f"  standard {_matched:,}/{_total:,} ({_matched / _total:.2%})")
 total_rv                = _total
@@ -557,11 +557,11 @@ our_coverage_percentage = _matched / _total
 
 # — Our dataset, large communities —
 t0 = _step("match_communities: ours large × routeviews large")
-_, routeviews_matched_passo5_lrg_df = match_communities(
-    passo5_lrg_df, rv_lrg_month, how=join_ours_routeviews
+_, routeviews_matched_our_dataset_lrg_df = match_communities(
+    our_dataset_lrg_df, rv_lrg_month, how=join_ours_routeviews
 )
-_total   = len(routeviews_matched_passo5_lrg_df)
-_matched = len(routeviews_matched_passo5_lrg_df.filter(pl.col("matched")))
+_total   = len(routeviews_matched_our_dataset_lrg_df)
+_matched = len(routeviews_matched_our_dataset_lrg_df.filter(pl.col("matched")))
 _done(t0)
 print(f"  large {_matched:,}/{_total:,} ({_matched / _total:.2%})")
 our_coverage_explicit_lrg   = _matched
@@ -569,11 +569,11 @@ our_coverage_percentage_lrg = _matched / _total
 
 # — Our dataset, all types —
 t0 = _step("match_communities: ours all × routeviews all")
-_, routeviews_matched_passo5_all_df = match_communities(
-    passo5_all_df, rv_all_month, how=join_ours_routeviews
+_, routeviews_matched_our_dataset_all_df = match_communities(
+    our_dataset_all_df, rv_all_month, how=join_ours_routeviews
 )
-_total   = len(routeviews_matched_passo5_all_df)
-_matched = len(routeviews_matched_passo5_all_df.filter(pl.col("matched")))
+_total   = len(routeviews_matched_our_dataset_all_df)
+_matched = len(routeviews_matched_our_dataset_all_df.filter(pl.col("matched")))
 _done(t0)
 print(f"  all {_matched:,}/{_total:,} ({_matched / _total:.2%})")
 our_coverage_explicit_all   = _matched
@@ -581,11 +581,11 @@ our_coverage_percentage_all = _matched / _total
 
 # — Our dataset, explicit + standard only —
 t0 = _step("match_communities: ours explicit+standard × routeviews standard")
-_, routeviews_matched_passo5_exp_df = match_communities(
-    passo5_exp_df, rv_month, how=join_ours_routeviews
+_, routeviews_matched_our_dataset_exp_df = match_communities(
+    our_dataset_exp_df, rv_month, how=join_ours_routeviews
 )
-_total   = len(routeviews_matched_passo5_exp_df)
-_matched = len(routeviews_matched_passo5_exp_df.filter(pl.col("matched")))
+_total   = len(routeviews_matched_our_dataset_exp_df)
+_matched = len(routeviews_matched_our_dataset_exp_df.filter(pl.col("matched")))
 _done(t0)
 print(f"  explicit & standard only {_matched:,}/{_total:,} ({_matched / _total:.2%})")
 our_coverage_explicit_exp   = _matched
@@ -593,9 +593,9 @@ our_coverage_percentage_exp = _matched / _total
 
 # — Communities in our dataset not in RouteViews —
 t0 = _step("Computing communities unique to our dataset")
-not_in_routeviews_df = passo5_all_df.join(routeviews_raw_df, on="community", how="anti")
+not_in_routeviews_df = our_dataset_all_df.join(routeviews_raw_df, on="community", how="anti")
 _not_in_rv_count = len(not_in_routeviews_df)
-_total_our_data  = len(passo5_all_df)
+_total_our_data  = len(our_dataset_all_df)
 _done(t0)
 print(f"  unique to our dataset: {_not_in_rv_count:,} / {_total_our_data:,} ({_not_in_rv_count / _total_our_data:.2%})")
 
@@ -731,7 +731,7 @@ print(f"  total communities: {total_rv:,}")
 t0 = _step("Semantic relations exploration")
 patterns = ["together", "requires", "overrides", "combined", "combination", "used with"]
 regex = "|".join(patterns)
-perhaps_df = passo5_raw_df.filter(
+perhaps_df = our_dataset_raw_df.filter(
     pl.col("description").str.contains(regex)
 ).filter(pl.col("description").str.contains(":"))
 _done(t0)
