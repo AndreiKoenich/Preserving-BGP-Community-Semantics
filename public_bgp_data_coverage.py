@@ -375,35 +375,6 @@ def _load_liu_from_json(json_path: str) -> pl.DataFrame:
     _done(t)
     return result
 
-
-# ---------------------------------------------------------------------------
-# Load RIPE ASN list
-# ---------------------------------------------------------------------------
-t0 = _step("Loading RIPE ASN list")
-ripe_asn_df = (
-    pl.read_lines("input_files/ripe-asn-replication.list")
-    .with_columns(
-        line=pl.when(pl.col("line") == "23456 AS_TRANS; reserved by RFC6793")
-        .then(pl.col("line") + ", ZZ")
-        .otherwise(pl.col("line")),
-    )
-    .with_columns(parsed_entry=pl.col("line").str.extract_groups(
-        r"^(?P<asn>\d+) (?P<as_name_long>.*), (?P<asn_ripe_location>\w+)$"
-    ))
-    .drop("line")
-    .unnest("parsed_entry")
-    .with_columns(pl.col(pl.String).str.strip_chars())
-    .with_columns(
-        as_name=pl.col("as_name_long").str.extract(r"^(?P<as_name>[0-9A-Z_\-]+( |$))"),
-        asn_ripe_location=pl.col("asn_ripe_location")
-        .replace("ZZ", None)
-        .cast(pl.Categorical),
-    )
-    .unique("asn", keep="first")
-)
-print(f"  {len(ripe_asn_df):,} ASNs loaded", flush=True)
-_done(t0)
-
 # ---------------------------------------------------------------------------
 # Load our dataset (our_dataset)
 # ---------------------------------------------------------------------------
@@ -438,11 +409,6 @@ liu_df = (
     .with_columns(asn_int=pl.col("asn").cast(pl.UInt64, strict=False))
     .with_columns(asn_iana_cat=get_asn_category(pl.col("asn_int")))
     .drop("asn_int")
-    .join(
-        ripe_asn_df.select(["asn", "as_name_long", "asn_ripe_location"]),
-        on="asn",
-        how="left",
-    )
 )
 liu_exp_df = liu_df.filter(pl.col("value_type") == "explicit")
 print(f"  {len(liu_df):,} rows total, {len(liu_exp_df):,} explicit", flush=True)
@@ -463,12 +429,6 @@ routeviews_raw_df = (
     )
     .pipe(parse_community_type)
     .pipe(_enrich_with_asn_category)
-    .join(
-        ripe_asn_df.select(["asn", "as_name_long", "asn_ripe_location"]),
-        left_on="asn_from_community",
-        right_on="asn",
-        how="left",
-    )
 )
 routeviews_df     = routeviews_raw_df.filter(pl.col("type") == "standard")
 routeviews_lrg_df = routeviews_raw_df.filter(pl.col("type") == "large")
@@ -484,12 +444,6 @@ brivaldo_df = (
     .with_columns(community=pl.col("community").replace(well_known_communities))
     .pipe(parse_community_type)
     .pipe(_enrich_with_asn_category)
-    .join(
-        ripe_asn_df.select(["asn", "as_name_long", "asn_ripe_location"]),
-        left_on="asn_from_community",
-        right_on="asn",
-        how="left",
-    )
 )
 print(f"  {len(brivaldo_df):,} rows loaded", flush=True)
 _done(t0)
@@ -503,12 +457,6 @@ krenc_df = (
     .with_columns(community=pl.col("community").replace(well_known_communities))
     .pipe(parse_community_type)
     .pipe(_enrich_with_asn_category)
-    .join(
-        ripe_asn_df.select(["asn", "as_name_long", "asn_ripe_location"]),
-        left_on="asn_from_community",
-        right_on="asn",
-        how="left",
-    )
 )
 print(f"  {len(krenc_df):,} rows loaded", flush=True)
 _done(t0)
