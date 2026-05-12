@@ -1,0 +1,87 @@
+OUR_TAG,BRIVALDO_TAG
+both:action:accept,traffic engineering
+both:action:accept:all_customers,traffic engineering
+both:action:accept:all_peers,traffic engineering
+both:action:accept:all_upstreams,traffic engineering
+both:action:accept:l3vpn_evpn,traffic engineering
+both:action:accept:peer_targeting,traffic engineering
+both:action:advertise,traffic engineering
+both:action:advertise:all_customers,traffic engineering
+both:action:advertise:l3vpn_evpn,traffic engineering
+both:action:advertise:peer_targeting,traffic engineering
+both:action:restrict:l3vpn_evpn,traffic engineering
+both:action:restrict:peer_targeting,traffic engineering
+inbound:action:accept,traffic engineering
+inbound:action:accept:all_peers,traffic engineering
+inbound:action:accept:l3vpn_evpn,traffic engineering
+inbound:action:accept:localpref,traffic engineering
+inbound:action:accept:localpref:all_customers,traffic engineering
+inbound:action:accept:localpref:all_peers,traffic engineering
+inbound:action:accept:localpref:all_upstreams,traffic engineering
+inbound:action:accept:localpref:l3vpn_evpn,traffic engineering
+inbound:action:accept:localpref:peer_targeting,traffic engineering
+inbound:action:accept:peer_targeting,traffic engineering
+inbound:action:blackhole,traffic engineering
+inbound:action:blackhole:all_peers,traffic engineering
+inbound:action:blackhole:all_upstreams,traffic engineering
+inbound:action:blackhole:localpref,traffic engineering
+inbound:action:blackhole:localpref:peer_targeting,traffic engineering
+inbound:action:blackhole:peer_targeting,traffic engineering
+inbound:action:flowspec,traffic engineering
+inbound:action:flowspec:peer_targeting,traffic engineering
+inbound:action:next_hop_steering,traffic engineering
+inbound:action:next_hop_steering:peer_targeting,traffic engineering
+inbound:action:reject,traffic engineering
+inbound:action:reject:all_peers,traffic engineering
+inbound:action:reject:peer_targeting,traffic engineering
+inbound:action:scrubbing,traffic engineering
+inbound:action:scrubbing:peer_targeting,traffic engineering
+inbound:action:unknown,traffic engineering
+inbound:action:validate,traffic engineering 
+inbound:action:validate:localpref,traffic engineering
+inbound:action:validate:peer_targeting,traffic engineering
+outbound:action:advertise,traffic engineering
+outbound:action:advertise:all_customers,traffic engineering
+outbound:action:advertise:all_peers,traffic engineering
+outbound:action:advertise:all_upstreams,traffic engineering
+outbound:action:advertise:l3vpn_evpn,traffic engineering
+outbound:action:advertise:med,traffic engineering
+outbound:action:advertise:med:all_customers,traffic engineering
+outbound:action:advertise:med:all_peers,traffic engineering
+outbound:action:advertise:med:all_upstreams,traffic engineering
+outbound:action:advertise:med:peer_targeting,traffic engineering
+outbound:action:advertise:more_specific,traffic engineering
+outbound:action:advertise:more_specific:peer_targeting,traffic engineering
+outbound:action:advertise:peer_targeting,traffic engineering
+outbound:action:advertise:prepend,traffic engineering
+outbound:action:advertise:prepend:all_customers,traffic engineering
+outbound:action:advertise:prepend:all_peers,traffic engineering
+outbound:action:advertise:prepend:all_upstreams,traffic engineering
+outbound:action:advertise:prepend:peer_targeting,traffic engineering
+outbound:action:restrict,traffic engineering
+outbound:action:restrict:all_peers,traffic engineering
+outbound:action:restrict:l3vpn_evpn,traffic engineering
+outbound:action:restrict:med:peer_targeting,traffic engineering
+outbound:action:restrict:peer_targeting,traffic engineering
+outbound:action:restrict:prepend,traffic engineering
+outbound:action:suppress,traffic engineering
+outbound:action:suppress:all_customers,traffic engineering
+outbound:action:suppress:all_peers,traffic engineering
+outbound:action:suppress:all_upstreams,traffic engineering
+outbound:action:suppress:l3vpn_evpn,traffic engineering
+outbound:action:suppress:peer_targeting,traffic engineering
+outbound:action:suppress:prepend,traffic engineering
+outbound:action:suppress:prepend:peer_targeting,traffic engineering
+outbound:action:unknown,traffic engineering
+information:location,geolocation
+information:mitigation_state,private
+information:performance,private
+information:route_type,route type
+information:route_tag,private
+information:route_source,exchange
+information:security_state,private
+information:unknown,internal route
+information:validation,route type
+information:validation_irr,route type
+information:validation_rpki,route type
+unknown,error

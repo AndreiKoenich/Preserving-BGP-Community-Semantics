@@ -1,0 +1,9 @@
+id,name
+0,geolocation
+1,private
+2,exchange
+3,internal routes
+4,route type
+5,traffic engineering
+6,rpki
+10,error
