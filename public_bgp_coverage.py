@@ -407,9 +407,9 @@ _done(t0)
 # ---------------------------------------------------------------------------
 # Load our dataset (passo5)
 # ---------------------------------------------------------------------------
-t0 = _step("Loading our dataset (bgp_communities_dataset.csv)")
+t0 = _step("Loading our dataset (our_dataset.csv)")
 passo5_raw_df = pl.read_csv(
-    "input_files/bgp_communities_dataset.csv",
+    "input_files/our_dataset.csv",
     has_header=True,
     schema={
         "asn":               pl.String,

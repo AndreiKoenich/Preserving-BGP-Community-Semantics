@@ -20,7 +20,7 @@ Generates one AS × Community Value heatmap PDF per dataset:
   output_files/coverage-count-krenc.pdf
 
 Input files expected under input_files/ (same directory as this script):
-  bgp_communities_dataset.csv         (Ours)
+  our_dataset.csv         (Ours)
   communities.db            (Brivaldo — queried at runtime)
   semanticdic_total.json    (Liu — converted + expanded at runtime)
   krenc_dataset.csv         (Krenc)
@@ -48,7 +48,7 @@ OUTPUT_DIR = HERE / "output_files"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
-OURS_PATH     = INPUT_DIR / "bgp_communities_dataset.csv"
+OURS_PATH     = INPUT_DIR / "our_dataset.csv"
 BRIVALDO_PATH = INPUT_DIR / "communities.db"
 LIU_JSON_PATH = INPUT_DIR / "semanticdic_total.json"
 KRENC_PATH    = INPUT_DIR / "krenc_dataset.csv"
