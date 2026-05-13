@@ -383,8 +383,8 @@ print("Generating ours_krenc_matrix.pdf...")
 build_confusion_chart(
     true_labels  = _merged_ok["ours_collapsed"],
     pred_labels  = _merged_ok["label_y"],
-    x_title      = "Krenc Label",
-    y_title      = "Ours Label",
+    y_title      = "Krenc Label",
+    x_title      = "Ours Label",
     output_path  = OUTPUT_DIR / "ours_krenc_matrix.pdf",
 )
 
@@ -462,8 +462,8 @@ print("Generating krenc_liu_matrix.pdf...")
 build_confusion_chart(
     true_labels  = krenc_liu_expected_df["expected_krenc_tag"],
     pred_labels  = krenc_liu_expected_df["tag"],
-    x_title      = "Krenc Label",
-    y_title      = "Liu Label",
+    y_title      = "Krenc Label",
+    x_title      = "Liu Label",
     output_path  = OUTPUT_DIR / "krenc_liu_matrix.pdf",
 )
 
