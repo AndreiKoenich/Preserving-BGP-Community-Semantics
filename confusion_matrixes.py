@@ -384,7 +384,7 @@ build_confusion_chart(
     true_labels  = _merged_ok["ours_collapsed"],
     pred_labels  = _merged_ok["label_y"],
     y_title      = "Krenc Label",
-    x_title      = "Ours Label",
+    x_title      = "Our Label",
     output_path  = OUTPUT_DIR / "ours_krenc_matrix.pdf",
 )
 
