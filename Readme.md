@@ -129,10 +129,9 @@ Measures how many communities observed in RouteViews (January 2026) are document
 
 **Processing highlights:**
 - Loads RouteViews communities from `jan-2026.txt`, classifying each as standard, extended, or large.
-- Replaces well-known community values (e.g. `65535:666`) with their IANA names before matching.
+- Replaces IANA well-known community names with their corresponding numeric values (e.g. NO_EXPORT → 65535:666) before matching.
 - Matches Ours and Liu using regex patterns (communities with parameterised values like `<value>` are expanded to regexes and matched against the RouteViews strings).
 - Matches Brivaldo and Krenc by exact community string intersection.
-- Annotates each ASN with its IANA category (assignable, private, reserved, documentation, unallocated).
 
 ---
 
