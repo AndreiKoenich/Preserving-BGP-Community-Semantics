@@ -38,9 +38,10 @@ No manual `pip install` or virtual environment setup is required.
 │   ├── ours_krenc_matrix.pdf
 │   └── krenc_liu_matrix.pdf
 │
-├── coverage_bar_charts.py          # Script 1
-├── coverage_charts.py              # Script 2
-├── confusion_matrixes.py           # Script 3
+├── coverage_charts.py              # Script 1
+├── confusion_matrixes.py           # Script 2
+├── public_bgp_data_coverage.py     # Script 3
+│
 └── run_all.sh                      # Runs all three scripts in sequence
 ```
 
@@ -60,9 +61,9 @@ The shell script checks that all required input files are present, then runs the
 ## Running scripts individually
 
 ```bash
-uv run coverage_bar_charts.py
 uv run coverage_charts.py
 uv run confusion_matrixes.py
+uv run public_bgp_data_coverage.py
 ```
 
 Each script reads from `input_files/` and writes its output to `output_files/`, creating the directory if it does not exist. Pre-existing files in `output_files/` with different names are never deleted.
@@ -70,26 +71,6 @@ Each script reads from `input_files/` and writes its output to `output_files/`, 
 ---
 
 ## Scripts
-
-### `coverage_bar_charts.py`
-
-Measures how many communities observed in RouteViews (January 2026) are documented in each of the four datasets (Ours, Liu, Brivaldo, Krenc), producing two bar-chart PDFs:
-
-| Output file | Description |
-|---|---|
-| `coverage_normalised.pdf` | Bar chart with a free y-axis, showing raw matched counts and percentage labels |
-| `coverage_scaled.pdf` | Same bars but the y-axis is anchored to the total number of RouteViews communities, making the absolute gap visible |
-
-**Inputs used:** `our_dataset.csv`, `communities.db`, `semanticdic_total.json`, `krenc_dataset.csv`, `jan-2026.txt`
-
-**Processing highlights:**
-- Loads RouteViews communities from `jan-2026.txt`, classifying each as standard, extended, or large.
-- Replaces well-known community values (e.g. `65535:666`) with their IANA names before matching.
-- Matches Ours and Liu using regex patterns (communities with parameterised values like `<value>` are expanded to regexes and matched against the RouteViews strings).
-- Matches Brivaldo and Krenc by exact community string intersection.
-- Annotates each ASN with its IANA category (assignable, private, reserved, documentation, unallocated).
-
----
 
 ### `coverage_charts.py`
 
@@ -132,6 +113,26 @@ Compares semantic label taxonomies across datasets by computing two confusion ma
 - Liu communities are loaded from `semanticdic_total.json`, regex values are expanded, and each entry is annotated: `semantic_type == "tag"` → `action=False`, all other types → `action=True`.
 - After joining Krenc × Liu on `(ASN, community value)`, the `expected_krenc_tag` is derived: if any matching Liu entry expects an action, the community is labelled `action`, otherwise `info`.
 - The derived label is compared against Krenc's own tag.
+
+---
+
+### `public_bgp_data_coverage.py`
+
+Measures how many communities observed in RouteViews (January 2026) are documented in each of the four datasets (Ours, Liu, Brivaldo, Krenc), producing two bar-chart PDFs:
+
+| Output file | Description |
+|---|---|
+| `coverage_normalised.pdf` | Bar chart with a free y-axis, showing raw matched counts and percentage labels |
+| `coverage_scaled.pdf` | Same bars but the y-axis is anchored to the total number of RouteViews communities, making the absolute gap visible |
+
+**Inputs used:** `our_dataset.csv`, `communities.db`, `semanticdic_total.json`, `krenc_dataset.csv`, `jan-2026.txt`
+
+**Processing highlights:**
+- Loads RouteViews communities from `jan-2026.txt`, classifying each as standard, extended, or large.
+- Replaces well-known community values (e.g. `65535:666`) with their IANA names before matching.
+- Matches Ours and Liu using regex patterns (communities with parameterised values like `<value>` are expanded to regexes and matched against the RouteViews strings).
+- Matches Brivaldo and Krenc by exact community string intersection.
+- Annotates each ASN with its IANA category (assignable, private, reserved, documentation, unallocated).
 
 ---
 
@@ -194,7 +195,7 @@ Key columns:
 ---
 
 ### `jan-2026.txt`
-A plain-text list of BGP community strings (one per line) observed in RouteViews and RIPE RIS collectors in January 2026. Used as the universe of "communities seen in the wild" for coverage calculations in `coverage_bar_charts.py`.
+A plain-text list of BGP community strings (one per line) observed in RouteViews and RIPE RIS collectors in January 2026. Used as the universe of "communities seen in the wild" for coverage calculations in `public_bgp_data_coverage.py`.
 
 Each line is a raw community string such as `1234:5678` or `65535:666`. Well-known communities are substituted with their IANA names before processing.
 
@@ -235,7 +236,7 @@ Columns:
 
 - All scripts are idempotent: re-running them overwrites existing output files with the same names and leaves all other files in `output_files/` untouched.
 - Liu regex expansion (in `coverage_charts.py` and `confusion_matrixes.py`) may take several minutes depending on the number of regex patterns in `semanticdic_total.json`.
-- The `coverage_bar_charts.py` script also prints per-dataset coverage statistics to stdout, which can be useful for a quick sanity check before inspecting the PDFs.
+- The `public_bgp_data_coverage.py` script also prints per-dataset coverage statistics to stdout, which can be useful for a quick sanity check before inspecting the PDFs.
 
 ## About Semantic Tag Taxonomy in Our Dataset
 
