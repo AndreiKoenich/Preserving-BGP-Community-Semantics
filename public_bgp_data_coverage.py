@@ -658,22 +658,6 @@ _done(t0)
 print(f"  total communities: {total_rv:,}")
 
 # ---------------------------------------------------------------------------
-# Chart 2 — y-axis scaled to total RouteViews communities
-# ---------------------------------------------------------------------------
-t0 = _step("Saving coverage_scaled.pdf")
-chart_coverage_scaled = _build_coverage_chart(
-    total_communities=total_rv,
-    counts=[our_coverage_explicit, liu_coverage_explicit,
-            brivaldo_coverage_explicit, krenc_coverage_explicit],
-    percentages=[our_coverage_percentage, liu_coverage_percentage,
-                 brivaldo_coverage_percentage, krenc_coverage_percentage],
-    y_domain=[0, total_rv],
-)
-chart_coverage_scaled.save(os.path.join(OUTPUT_DIR, "coverage_scaled.pdf"))
-_done(t0)
-print(f"  total communities: {total_rv:,}")
-
-# ---------------------------------------------------------------------------
 # Semantic relations exploration
 # ---------------------------------------------------------------------------
 t0 = _step("Semantic relations exploration")
